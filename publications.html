@@ -10,15 +10,36 @@
     <script defer src="theme.js"></script>
     <meta name="description"
         content="Publications and conference contributions by Nicolas Barleon." />
+
+    <!-- Minimal, page-scoped styles for the filter buttons -->
+    <style>
+        .pub-filters {
+            margin: 1rem 0 2rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .pub-filters .button {
+            cursor: pointer;
+        }
+
+        .pub-filters .button.active {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+        }
+    </style>
 </head>
 
 <body>
     <header class="site-header">
         <a class="brand" href="./">Nicolas Barleon</a>
         <nav class="site-nav">
-            <a href="./index.html">Home</a>
+            <a href="./">Home</a>
             <a href="./projects.html">Projects</a>
-            <a class="active" href="./">Publications</a>
+            <a class="active"
+                href="./publications.html">Publications</a>
             <button id="theme-toggle" type="button"
                 onclick="__toggleTheme(event)"
                 aria-label="Switch theme">🌓</button>
@@ -28,7 +49,18 @@
     <main class="container">
         <h1>Publications</h1>
 
-        <section>
+        <!-- Filter buttons -->
+        <div class="pub-filters">
+            <button class="button small"
+                data-target="journals">Publications</button>
+            <button class="button small"
+                data-target="conferences">Conferences</button>
+            <button class="button small"
+                data-target="all">Show All</button>
+        </div>
+
+        <!-- Journals section (hidden by default) -->
+        <section id="journals" style="display:none;">
             <h2>Journal articles</h2>
             <ol class="pub-list">
                 <li>
@@ -230,7 +262,8 @@
             </ol>
         </section>
 
-        <section>
+        <!-- Conferences section (hidden by default) -->
+        <section id="conferences" style="display:none;">
             <h2>Conferences</h2>
             <ol class="pub-list">
                 <li>
@@ -378,8 +411,52 @@
         </section>
     </main>
 
-    <site-footer></site-footer>
-    <script defer src="load-footers.js"></script>
+    <footer class="site-footer">
+        <p>© <span id="year"></span> Nicolas Barleon</p>
+    </footer>
+
+    <!-- Year + filter logic -->
+    <script>
+        // Year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Filters: both sections hidden by default; buttons reveal selected or all.
+        (function () {
+            const buttons = document.querySelectorAll('.pub-filters .button');
+            const journals = document.getElementById('journals');
+            const conferences = document.getElementById('conferences');
+
+            function setActive(btn) {
+                buttons.forEach(b => b.classList.remove('active'));
+                if (btn) btn.classList.add('active');
+            }
+
+            function show(target) {
+                if (target === 'journals') {
+                    journals.style.display = 'block';
+                    conferences.style.display = 'none';
+                } else if (target === 'conferences') {
+                    journals.style.display = 'none';
+                    conferences.style.display = 'block';
+                } else if (target === 'all') {
+                    journals.style.display = 'block';
+                    conferences.style.display = 'block';
+                }
+            }
+
+            buttons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const target = btn.dataset.target; // 'journals' | 'conferences' | 'all'
+                    setActive(btn);
+                    show(target);
+                });
+            });
+
+            // Optional: start with both hidden (no active). Uncomment to auto-open "Publications":
+            // const defaultBtn = document.querySelector('.pub-filters [data-target="journals"]');
+            // defaultBtn.click();
+        })();
+    </script>
 </body>
 
 </html>
