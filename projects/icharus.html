@@ -7,6 +7,7 @@
         content="width=device-width,initial-scale=1" />
     <title>ICHAruS — Nicolas Barleon</title>
     <link rel="stylesheet" href="../style.css" />
+    <script defer src="../theme.js"></script>
     <meta name="description"
         content="ICHAruS: Investigation and Control of Hydrogen flames Across the Scales" />
 </head>
@@ -15,10 +16,12 @@
     <header class="site-header">
         <a class="brand" href="../">Nicolas Barleon</a>
         <nav class="site-nav">
-            <a href="../">Home</a>
-            <a class="active"
-                href="../projects.html">Projects</a>
-            <a href="../publications.html">Publications</a>
+            <a class="active" href="./">Home</a>
+            <a href="./projects.html">Projects</a>
+            <a href="./publications.html">Publications</a>
+            <button id="theme-toggle" type="button"
+                onclick="__toggleTheme(event)"
+                aria-label="Switch theme">🌓</button>
         </nav>
     </header>
 

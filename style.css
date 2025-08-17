@@ -1,11 +1,126 @@
-/* Base */
+/* Base theme tokens — DARK by default (matches your current design)
+   If the user hasn't chosen a theme, we later respect the OS preference.
+*/
+
+/* =========================
+   0) TOKENS
+   ========================= */
 :root {
+    /* Core (current dark palette from your site) */
+    --bg: #0b0b0f;
+    /* was :root --bg */
+    --fg: #e5e7eb;
+    /* was :root --fg */
+    --muted: #9ca3af;
+    /* was :root --muted */
+    --accent: #60a5fa;
+    /* was :root --accent */
+
+    /* Derived from existing rules */
+    --radial: #111827;
+    /* body gradient center color */
+    --nav-bg: rgba(12, 12, 16, .6);
+    /* .site-header background */
+    --header-border: #111;
+    /* header & footer border */
+    --footer-border: #111;
+
+    --button-bg: #111827;
+    /* .button background */
+    --button-border: #2a2f39;
+    /* .button/.badge border */
+    --hover-bg: rgba(255, 255, 255, .06);
+    /* nav hover bg */
+    --active-bg: rgba(96, 165, 250, .15);
+    /* active nav pill */
+
+    --card-bg: rgba(255, 255, 255, .03);
+    /* .card background */
+    --card-border: #1f2430;
+    /* .card border */
+
+    --link: var(--fg);
+    /* keep links same as text by default */
+}
+
+/* Explicit DARK choice */
+:root[data-theme="dark"],
+body[data-theme="dark"] {
+    /* same as base; keep for clarity/override strength */
     --bg: #0b0b0f;
     --fg: #e5e7eb;
     --muted: #9ca3af;
     --accent: #60a5fa;
+    --radial: #111827;
+    --nav-bg: rgba(12, 12, 16, .6);
+    --header-border: #111;
+    --footer-border: #111;
+    --button-bg: #111827;
+    --button-border: #2a2f39;
+    --hover-bg: rgba(255, 255, 255, .06);
+    --active-bg: rgba(96, 165, 250, .15);
+    --card-bg: rgba(255, 255, 255, .03);
+    --card-border: #1f2430;
+    --link: var(--fg);
 }
 
+/* Explicit LIGHT choice */
+:root[data-theme="light"],
+body[data-theme="light"] {
+    --bg: #ffffff;
+    --fg: #0b0b0f;
+    --muted: #4b5563;
+    --accent: #3b82f6;
+
+    --radial: #dbeafe;
+    /* soft light-blue glow */
+    --nav-bg: rgba(255, 255, 255, .7);
+    --header-border: #e5e7eb;
+    --footer-border: #e5e7eb;
+
+    --button-bg: #f3f4f6;
+    --button-border: #e5e7eb;
+    --hover-bg: rgba(0, 0, 0, .06);
+    --active-bg: rgba(59, 130, 246, .15);
+
+    --card-bg: rgba(0, 0, 0, .02);
+    --card-border: #e5e7eb;
+
+    --link: #1f2937;
+    /* slightly darker link for readability */
+}
+
+/* If no explicit theme is chosen, respect OS preference */
+@media (prefers-color-scheme: light) {
+
+    :root:not([data-theme]),
+    body:not([data-theme]) {
+        --bg: #ffffff;
+        --fg: #0b0b0f;
+        --muted: #4b5563;
+        --accent: #3b82f6;
+
+        --radial: #dbeafe;
+        --nav-bg: rgba(255, 255, 255, .7);
+        --header-border: #e5e7eb;
+        --footer-border: #e5e7eb;
+
+        --button-bg: #f3f4f6;
+        --button-border: #e5e7eb;
+        --hover-bg: rgba(0, 0, 0, .06);
+        --active-bg: rgba(59, 130, 246, .15);
+
+        --card-bg: rgba(0, 0, 0, .02);
+        --card-border: #e5e7eb;
+
+        --link: #1f2937;
+    }
+}
+
+/* =========================
+   1) RESET & BASE
+   (kept minimal; your typography intact)
+   ========================= */
 * {
     box-sizing: border-box;
 }
@@ -19,10 +134,15 @@ body {
     margin: 0;
     font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
     color: var(--fg);
-    background: radial-gradient(1200px 800px at 80% -10%, #111827 0%, transparent 60%), var(--bg);
+    /* Your original gradient + bg, now themed */
+    background:
+        radial-gradient(1200px 800px at 80% -10%, var(--radial) 0%, transparent 60%),
+        var(--bg);
 }
 
-/* Header / Nav */
+/* =========================
+   2) HEADER / NAV
+   ========================= */
 .site-header {
     display: flex;
     align-items: center;
@@ -32,8 +152,8 @@ body {
     position: sticky;
     top: 0;
     backdrop-filter: blur(8px);
-    background: rgba(12, 12, 16, .6);
-    border-bottom: 1px solid #111;
+    background: var(--nav-bg);
+    border-bottom: 1px solid var(--header-border);
 }
 
 .brand {
@@ -53,15 +173,35 @@ body {
 
 .site-nav a:hover {
     opacity: 1;
-    background: rgba(255, 255, 255, .06);
+    background: var(--hover-bg);
 }
 
 .site-nav .active {
     opacity: 1;
-    background: rgba(96, 165, 250, .15);
+    background: var(--active-bg);
 }
 
-/* Layout */
+/* Optional: theme toggle button styling */
+#theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .35rem;
+    background: transparent;
+    color: var(--fg);
+    border: 1px solid var(--button-border);
+    border-radius: 999px;
+    padding: .45rem .65rem;
+    cursor: pointer;
+}
+
+#theme-toggle:hover {
+    background: var(--hover-bg);
+}
+
+/* =========================
+   3) LAYOUT
+   ========================= */
 .container {
     max-width: 960px;
     margin: 0 auto;
@@ -84,23 +224,26 @@ body {
     max-width: 60ch;
 }
 
-/* Buttons & Pills */
+/* =========================
+   4) BUTTONS & PILLS
+   ========================= */
 .button,
 .pill {
     display: inline-block;
     text-decoration: none;
-    border: 1px solid #2a2f39;
+    border: 1px solid var(--button-border);
     padding: .65rem 1rem;
     border-radius: 10px;
     font-weight: 600;
 }
 
 .button {
-    background: #111827;
+    background: var(--button-bg);
+    color: var(--fg);
 }
 
 .button:hover {
-    border-color: #3b4251;
+    border-color: color-mix(in oklab, var(--button-border), var(--fg) 20%);
 }
 
 .button.ghost {
@@ -121,7 +264,9 @@ body {
     background: transparent;
 }
 
-/* Cards grid */
+/* =========================
+   5) CARDS GRID
+   ========================= */
 .grid {
     display: grid;
     gap: 1rem;
@@ -129,8 +274,8 @@ body {
 }
 
 .card {
-    background: rgba(255, 255, 255, .03);
-    border: 1px solid #1f2430;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
     border-radius: 14px;
     padding: 1rem;
 }
@@ -156,7 +301,9 @@ body {
     gap: 1rem;
 }
 
-/* Publications */
+/* =========================
+   6) PUBLICATIONS
+   ========================= */
 .pub-list {
     max-width: 80ch;
     margin: 1rem 0;
@@ -175,16 +322,36 @@ body {
     color: var(--muted);
 }
 
-/* Footer */
-.site-footer {
-    border-top: 1px solid #111;
-    color: var(--muted);
-    text-align: center;
-    padding: 1.5rem;
+/* Small badges for year/venue */
+.badge {
+    display: inline-block;
+    margin-left: .4rem;
+    padding: .15rem .45rem;
+    border: 1px solid var(--button-border);
+    border-radius: .5rem;
+    font-size: .8rem;
+    vertical-align: middle;
 }
 
+/* (de-dup cleanups from original stylesheet) */
+.pub-list li {
+    margin: 0 0 1rem;
+}
+
+.pub-title {
+    font-weight: 700;
+}
+
+.pub-authors,
+.pub-venue {
+    color: var(--muted);
+}
+
+/* =========================
+   7) FOOTER
+   ========================= */
 .site-footer {
-    border-top: 1px solid #111;
+    border-top: 1px solid var(--footer-border);
     color: var(--muted);
     text-align: center;
     padding: 1.5rem;
@@ -206,28 +373,4 @@ body {
 .social-links a:hover {
     opacity: 1;
     color: var(--accent);
-}
-
-/* Small badges for year/venue */
-.badge {
-    display: inline-block;
-    margin-left: .4rem;
-    padding: .15rem .45rem;
-    border: 1px solid #2a2f39;
-    border-radius: .5rem;
-    font-size: .8rem;
-    vertical-align: middle;
-}
-
-.pub-list li {
-    margin: 0 0 1rem;
-}
-
-.pub-title {
-    font-weight: 700;
-}
-
-.pub-authors,
-.pub-venue {
-    color: var(--muted);
 }
